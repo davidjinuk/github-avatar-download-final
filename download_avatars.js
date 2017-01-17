@@ -14,6 +14,21 @@ var mkdir = function () {
   }
 }();
 
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
+
+if(repoOwner == undefined){
+  throw err;
+}
+if(repoName == undefined){
+  throw err;
+}
+
+  // if (repoOwner.length===0) throw err;
+  // if (repoName.length ===0) throw err;
+
+
+
 function getRepoContributors(repoOwner, repoName, cb) {
   // ...
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
@@ -26,7 +41,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   };
 
   request(options, function(err, response, body) {
-    if (err) throw err;
+    // if (err) throw err;
     console.log('Response Status Code:', response.statusCode);
 
     var results = JSON.parse(body);
@@ -51,7 +66,8 @@ function downloadImageByURL(url, filePath) {
          .pipe(fs.createWriteStream(filePath))
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(repoOwner, repoName, function(err, result) {
+
   console.log("Errors:", err);
   console.log("Result:", result);
 });
