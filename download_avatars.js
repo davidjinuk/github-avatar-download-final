@@ -31,6 +31,27 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  // ...
+  var fs = require('fs');
+  request.get(url)
+         .on('error', function (err) {
+           throw err;
+         })
+         .on('response', function (response) {
+           console.log('Response Status Code: ', response.statusCode);
+           console.log('Response Status Message: ', response.statusMessage);
+           console.log('Content Type: ', response.headers['content-type']);
+           console.log('Downloading image...');
+         })
+         .pipe(fs.createWriteStream(filePath))
+
+         .on('finish', function () {
+            console.log('Download Complete');
+         });
+}
+downloadImageByURL('https://avatars.githubusercontent.com/u/1615?v=3', './jeresig.jpg');
+
 getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err);
   console.log("Result:", result);
