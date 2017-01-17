@@ -3,9 +3,11 @@ var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+//my username and token
 var GITHUB_USER = 'davidjinuk';
 var GITHUB_TOKEN = '908e91f9130a91e1e46d2bebc080511c9c3560a1';
 
+//creat a folder to store the images
 var mkdir = function () {
   try {
     fs.mkdir('avatars');
@@ -14,9 +16,11 @@ var mkdir = function () {
   }
 }();
 
+//repo owner and repo name from user
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
 
+//if the repoOwner or repoName is undefined throw error
 if(repoOwner == undefined){
   throw err;
 }
@@ -24,11 +28,7 @@ if(repoName == undefined){
   throw err;
 }
 
-  // if (repoOwner.length===0) throw err;
-  // if (repoName.length ===0) throw err;
-
-
-
+//
 function getRepoContributors(repoOwner, repoName, cb) {
   // ...
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
@@ -44,28 +44,35 @@ function getRepoContributors(repoOwner, repoName, cb) {
     // if (err) throw err;
     console.log('Response Status Code:', response.statusCode);
 
+    //store json body to results
     var results = JSON.parse(body);
+    //loop through results and store into login and avatar
     results.forEach(function(value, index){
 
     var login = 'avatars/' + value.login + '.jpg';
     var avatar = value.avatar_url;
 
+    //call function to input avatar and login information
     downloadImageByURL(avatar, login);
     });
   });
 }
 
+//downloads the image with url and filepath
 function downloadImageByURL(url, filePath) {
   request.get(url)
          .on('error', function (err) {
            throw err;
          })
+         //show what type of image
          .on('response', function (response) {
            console.log('Content Type: ', response.headers['content-type']);
          })
+         //write file to avatars folder
          .pipe(fs.createWriteStream(filePath))
 }
 
+//call function to get the image
 getRepoContributors(repoOwner, repoName, function(err, result) {
 
   console.log("Errors:", err);
