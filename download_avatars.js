@@ -1,11 +1,10 @@
 var request = require('request');
 var fs = require('fs');
+var dotenv = require('dotenv').config();
 
 console.log('Welcome to the GitHub Avatar Downloader!');
-
-//my username and token
-var GITHUB_USER = 'davidjinuk';
-var GITHUB_TOKEN = '908e91f9130a91e1e46d2bebc080511c9c3560a1';
+console.log(process.env.GITHUB_USER);
+console.log(process.env.GITHUB_TOKEN);
 
 //creat a folder to store the images
 var mkdir = function () {
@@ -31,7 +30,7 @@ if(repoName == undefined){
 //
 function getRepoContributors(repoOwner, repoName, cb) {
   // ...
-  var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
+  var requestURL = 'https://'+ process.env.GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
 
   var options = {
     url: requestURL,
@@ -53,6 +52,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
     var avatar = value.avatar_url;
 
     //call function to input avatar and login information
+
+
     downloadImageByURL(avatar, login);
     });
   });

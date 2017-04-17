@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/davidjinuk/github-avatar-download-final#readme",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "request": "^2.79.0"
   }
 }
